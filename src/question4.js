@@ -1,5 +1,5 @@
 import makeGetRequest from './utils/makeGetRequest';
-import {create, render} from './utils/dom';
+import {$id, create, render, appendTo, attachEvent} from './utils/dom';
 
 export function question4() {
     /**
@@ -16,13 +16,20 @@ export function question4() {
     of these todos, and depending on how you do it, you could have 200 event listeners
     running in the app, or...you could have one.
      
-    If you don't remember all of the dom api, or just want to type less,
-    two functions, create and render have been imported to help. They are explained below.
+    If you don't remember all of the dom api some functions have been imported to help.
+    These dom utils are explained below.
      */
 
+    function fn(e) {
+        if (e.target.nodeName === 'LI') {
+            console.log(e.target.innerHTML);
+        }
+        
+    }
     makeGetRequest()
         .then((data) => {
-
+            let app = $id('app');
+            attachEvent('click', app, fn);
             data.forEach((todo) => {
             /*
                 Each todo looks like this:
@@ -34,7 +41,8 @@ export function question4() {
                 }
                 We just want the title. 
             */
-          
+                let li = create('li', todo.title);
+                appendTo(li, app);
             });
             
         })
@@ -46,11 +54,19 @@ export function question4() {
 
 /*
 util functions: 
-We are importing two simple functions called 'create' and 'render'.
+$id(id) //id: string; returns HTMLElement
+shorthand for document.getElementById
 
-    create(nodeName, value?) will make
-    1) a dom element of type nodeName (nodeName is a string like 'p', 'div', 'ul' etc).
-    2) if you pass in a value (a string or number), the innerHTML of the element will be that value.
+create(nodeName, value?) // nodeName: string, value: string | number; returns HTMLELement
+creates a dom element, and if a value is provided, that value is set as innerHTML
 
-    render(element) will put an element in the dom of our html page.
+appendTo(child, parent) // child, parent: HTMLElement; returns void
+
+attachEvent(eventType, element, callback) 
+//eventType: string, element: HTMLElement, callback: function; returns void
+Registers a callback function to handle an event on an element like 'addEventListener' 
+or jQuery's 'on'
+
+render(element) //element: HTMLElement; returns void
+Puts an element in the <div id="app"> tag in the html file
 */

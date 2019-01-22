@@ -5,7 +5,9 @@ export function question1() {
      * 1) isPalindrome(str) takes a string as a parameter
      * 2) isPalindrome(str) = true if str is a "palindrome"
      * 3) isPalindrome(str) = false if str is not a "palindrome"
-     * You can assume there are no spaces in str. 
+     * You can assume there are no spaces in str.
+     * Bonus for handling non strings by returning some meaningful
+     * error 
      */
     function isPalindrome(str) {
         
