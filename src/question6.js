@@ -4,9 +4,10 @@ export function question6() {
 
     /**
     MyButton is a class that makes a button and puts it in the dom.
-    One passes some text for the button text and a callback that will fire
-    when the button is clicked. However, we may have many types of buttons, so we'd 
-    like to log some info about which type of button is clicked.
+    One passes to MyButton's constructor some text for the button text and 
+    a callback that will fire when the button is clicked. However, we may 
+    have many types of buttons, so we'd like to log some info about which 
+    type of button is clicked.
 
     The below code almost works, but something went wrong. Try to fix this class so
     that when the button is clicked, both the logging and the callback are invoked 
