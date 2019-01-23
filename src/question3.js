@@ -1,44 +1,31 @@
+
 export function question3() {
 
-    /**
-    Below is a function for making network requests
-    but we don't like its api
-    We'd rather be able to use makeGetRequest like this:
-
-    makeGetRequest(url).then(
-        (response) => {
-            //do something with the response
-        },
-        (error) => {
-            //do something with the error
-        }
-    );
-
-    So the object of this exercise is to make this function "thenable"
-    and to get data from it.
-    */
-    function makeGetRequest(url) {
-
-        let req = new XMLHttpRequest();
-        req.open('GET', url, true);
-        req.onload = function() {
-            if (req.status < 400) {
-                //success, do something with data
-                //hint: this api has req.responseText
-                //warning: req.responseText is a string, not json "out of the box"
-                
-            } else {
-                //failure, handle this
-    
+    //Here's an object
+    let o = {
+        a: 42,
+        b: 'stuff',
+        c: 'other stuff',
+        d: 0,
+        e: 'more' 
+    };
+    /** 
+    Here's some procedural code that pulls things out of the object
+    and assigns them to variables:
+        let a = o.a;
+        let b = o.b;
+        let c = {};
+        for (let key in o) {
+            if (key !== 'a' && key !== 'b') {
+                c[key] = o[key];
             }
         }
-        req.send();
-    }
-
-    //test it:
-    //here's a url you can use: 
-    let u = 'https://jsonplaceholder.typicode.com/todos';
-
-    //makeGetRequest(u).then((r) => console.log(r)).catch((e) => console.log(e));
+    //Try to use ES6 techiques to accomplish the same thing in one line. 
+    We'll log variables a, b and c to the console to check your work:
+    */
+    
+    // console.log('a: ', a);
+    // console.log('b: ', b);
+    // console.log('c: ', c);    
 
 }

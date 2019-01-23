@@ -31,7 +31,6 @@ export function attachEvent(eventType, element, callback) {
 }
 
 export function render(el) {
-    document.getElementById('app').innerHTML = '';
     document.getElementById('app').appendChild(el);
 }
 

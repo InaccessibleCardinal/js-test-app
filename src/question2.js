@@ -6,9 +6,9 @@ export function question2() {
      * 2) add(x)(y) should return x + y
      */
 
-     function add() {
+    function add() {
         
-     }
+    }
      
     //test it:
     //console.log('2 + 3: ', add(2)(3)); //expect 5
