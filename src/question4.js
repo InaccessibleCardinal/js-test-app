@@ -28,8 +28,7 @@ export function question4() {
     }
     makeGetRequest()
         .then((data) => {
-            let app = $id('app');
-            attachEvent('click', app, fn);
+            
             data.forEach((todo) => {
             /*
                 Each todo looks like this:
@@ -41,8 +40,7 @@ export function question4() {
                 }
                 We just want the title. 
             */
-                let li = create('li', todo.title);
-                appendTo(li, app);
+            
             });
             
         })
