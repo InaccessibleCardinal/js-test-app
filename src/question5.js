@@ -7,8 +7,8 @@ export function question5() {
     Where each cx^n is called a 'term' and means `c times x raised to n` -- `c` is called a 
     'coefficient', and `n` an 'exponent'. Notice that x is 1x^1 and a constant value like 7 is 7x^0.
 
-    If we only consider polynomials p with non-negative exponents and integer coeficients, then
-    the 'derivative' of p is defined by a straightforward algorithm applied to each term:
+    If we only consider polynomials p with non-negative integer exponents and integer coeficients, 
+    then the 'derivative' of p is defined by a straightforward algorithm applied to each term:
     ************************************************************************************************
     Multiply the exponent by the coeficient to get a new coeficient and decrement the exponent to 
     get the new exponent.
