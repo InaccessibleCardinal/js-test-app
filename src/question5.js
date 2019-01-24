@@ -27,9 +27,13 @@ export function question5() {
                 //success, do something with data
                 //hint: this api has req.responseText
                 //warning: req.responseText is a string, not json "out of the box"
+
+
                 
             } else {
                 //failure, handle this
+
+                
                
             }
         }

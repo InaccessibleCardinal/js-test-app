@@ -17,7 +17,7 @@ if (typeof window !== 'undefined') {
         question4();
         question5();
         question6();
-        //question7(); //uncomment to work question 7
+        // question7(); //uncomment to work question 7
         question8(); 
        
     }

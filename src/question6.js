@@ -22,7 +22,6 @@ export function question6() {
 
     makeGetRequest()
         .then((data) => {
-
             data.forEach((todo) => {
             /*
                 Each todo looks like this:
@@ -34,7 +33,6 @@ export function question6() {
                 }
                 We just want the title. 
             */
-               
             });
             
         })
