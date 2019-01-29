@@ -62,6 +62,7 @@ export default function main() {
         return el;
     }
 
+    let Q = [];
     function update(newEl, oldEl, parent = app, index = 0) {
         
         if (newEl && !oldEl) {
@@ -91,79 +92,89 @@ export default function main() {
                 //new tagName -> blowout original 
                 parent.replaceChild(newEl, oldEl);
                 return;
-            } else if (XOR(newAttributes, oldAttributes)) {
-                //attrs vs no attrs -> blowout original
+
+            } else if (differentAttrs(newAttributes, oldAttributes)) {
+
                 parent.replaceChild(newEl, oldEl);
                 return;
 
-            } else if (newAttributes && oldAttributes) {
-                //diff attrs
-                if (differentAttrs(newAttributes, oldAttributes)) {
+            } else if (differentChildren(newChildren, oldChildren)) {
 
-                    parent.replaceChild(newEl, oldEl);
-                    return;
+                parent.replaceChild(newEl, oldEl);
+                return;
 
-                } else if (XOR(newChildren, oldChildren)) {
-                //children vs no children
-                    parent.replaceChild(newEl, oldEl);
-                    return;
+            } else {
+                // console.log('newChildren length: ', newChildren.length)
+                // console.log('oldChildren length: ', oldChildren.length)
 
-                } else if (newChildren && oldChildren) {
-
-                   
-console.log('new children: ', newChildren)
-console.log('old children: ', oldChildren)
-console.log('nc: ', newChildNodes)
-console.log('oc: ', oldChildNodes)
-                    repeatOnChildren(newChildren, oldChildren, oldEl);
-
-                    
-
-                }
-
-            } else if (!newAttributes && !oldAttributes) {
-                //recurse on children
-                if (XOR(newChildren, oldChildren)) {
-
-                    parent.replaceChild(newEl, oldEl);
-                    return;
-
-                } else if (newChildren && oldChildren) { 
-
-                    if (newChildren.length !== oldChildren.length) {
-                    //this is too strong
-                        parent.replaceChild(newEl, oldEl);
-                        return;
-                    } else {
-
-                        repeatOnChildren(newChildren, oldChildren, oldEl);
-
+                if (newChildren.length === 0 || oldChildren.length === 0) {
+                    console.log('index: ', index)
+                    console.log('newEl innerHTML differs: ', newEl.innerHTML !== oldEl.innerHTML)
+                    console.log('oldEl: ', oldEl)
+                    console.log('parent: ', parent)
+                    if (newEl.innerHTML !== oldEl.innerHTML) {
+                        Q.push({
+                            parent, 
+                            new: newEl, 
+                            old: parent.children[index]
+                        });
+                        //parent.replaceChild(newEl, parent.children[index])
                     }
+
                 }
-     
+
+                repeatOnChildren(newChildren, oldChildren, oldEl);
+                console.log('Q: ', Q)
             }
         }
+
+    }
+
+    function differentChildren(newChildren, oldChildren) {
+        let difference = false;
+       
+        if (isDefined(newChildren) || isDefined(oldChildren)) {
+          
+           if (!(isDefined(newChildren) && isDefined(oldChildren))) {
+               difference = true;
+           }
+
+        }
+        return difference;
+    }
+
+    function repeatOnChildren(newChildren, oldChildren, parent) {
+        let l1 = newChildren.length, l2 = oldChildren.length;
+        for (let i = 0; i < l1 || i < l2; ++i) {
+            update(newChildren[i], oldChildren[i], parent, i);
+        }   
     }
 
     function differentAttrs(newAttributes, oldAttributes) {
-        let newA = genAttrsObj(newAttributes);
-        let oldA = genAttrsObj(oldAttributes);
         let difference = false;
-        for (let a1 in newA) {
-            if (newA.hasOwnProperty(a1)) {
 
-                if (newA[a1] !== oldA[a1]) {
-                    difference = true;
+        if (isDefined(newAttributes) || isDefined(oldAttributes)) {
+
+            let newA = genAttrsObj(newAttributes);
+            let oldA = genAttrsObj(oldAttributes);
+            
+            for (let a1 in newA) {
+                if (newA.hasOwnProperty(a1)) {
+    
+                    if (newA[a1] !== oldA[a1]) {
+                        difference = true;
+                    }
                 }
             }
-        }
-        for (let a2 in oldA) {
-            if (oldA.hasOwnProperty(a2)) {
-                if (oldA[a2] !== newA[a2]) {
-                    difference = true;
+            for (let a2 in oldA) {
+                if (oldA.hasOwnProperty(a2)) {
+                    if (oldA[a2] !== newA[a2]) {
+                        difference = true;
+                    }
                 }
             }
-        }
+            return difference;
+        } 
         return difference;
     }
 
@@ -176,12 +187,11 @@ console.log('oc: ', oldChildNodes)
         return o;
     }
 
-    function repeatOnChildren(newChildren, oldChildren, parent) {
-        let l1 = newChildren.length, l2 = oldChildren.length;
-        for (let i = 0; i < l1 || i < l2; ++i) {
-            update(newChildren[i], oldChildren[i], parent, i);
-        }   
+    function isDefined(o) {
+        return o !== null && o !== undefined;
     }
+
+
 
     function XOR(v1, v2) {
         return (
