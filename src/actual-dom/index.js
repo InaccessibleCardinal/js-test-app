@@ -1,15 +1,40 @@
-
+const OBJECT = '[object Object]';
+const ARRAY = '[object Array]';
+const STRING = '[object String]';
+const NUMBER = '[object Number]';
+const FUNCTION = '[object Function]';
+const NULL = '[object Null]';
+const UNDEFINED = '[object Undefined]';
+const PROMISE = '[object Promise]';
+function getType(o) {
+    return Object.prototype.toString.call(o);
+}
 
 export default function main() {
     let app = $id('app');
+    let l1 = [
+        {name: 'ken', id: 'p1'},
+        {name: 'jen', id: 'p2'},
+        {name: 'jo', id: 'p3'},
+        {name: 'sam', id: 'p4'}
+    ];
+    let l2 = [
+        {name: 'ken', id: 'p1'},
+        {name: 'jen', id: 'p2'},
+        {name: 'jim', id: 'p5'},
+        {name: 'sam', id: 'p4'}
+    ];
+    let list1 = l1.map((p) => create('li', null, p.name));
+    let list2 = l2.map((p) => create('li', null, p.name));
 
-    let h1 = create('h1', 'Some Headline', {'class': 'headline'});
-    update(h1);
+    let ul1 = create('ul', {'class': 'headline'}, list1);
+    update(ul1);
     
-    let h2 = create('h1', 'Some <a>other</a> headline', {'class': 'headline'});
-    let b = create('button', 'change');
+    let ul2 = create('ul', {'class': 'headline'}, list2);
+    
+    let b = create('button', null, 'change');
     b.addEventListener('click', function() {
-        update(h2, h1);
+        update(ul2, ul1);
     });
     document.body.appendChild(b)
 
@@ -17,10 +42,15 @@ export default function main() {
         return document.getElementById(id);
     }
 
-    function create(nodeName, text, attrs) {
+    function create(nodeName, attrs, children) {
         let el = document.createElement(nodeName);
-        if (text) {
-           el.innerHTML = text;
+        if (children) {
+
+            if ([STRING, NUMBER].indexOf(getType(children)) > -1) {
+                el.innerHTML = children;
+            } else if (getType(children) === ARRAY) {
+                children.forEach((c) => el.appendChild(c));
+            } 
         }
         if (attrs) {
             for (let a in attrs) {
@@ -32,7 +62,7 @@ export default function main() {
         return el;
     }
 
-    function update(newEl, oldEl, parent = app) {
+    function update(newEl, oldEl, parent = app, index = 0) {
         
         if (newEl && !oldEl) {
 
@@ -71,7 +101,7 @@ export default function main() {
                 if (differentAttrs(newAttributes, oldAttributes)) {
 
                     parent.replaceChild(newEl, oldEl);
-                    return void 0;
+                    return;
 
                 } else if (XOR(newChildren, oldChildren)) {
                 //children vs no children
@@ -80,15 +110,14 @@ export default function main() {
 
                 } else if (newChildren && oldChildren) {
 
-                    if (newChildren.length !== oldChildren.length) {
-                    //this is too strong
-                        parent.replaceChild(newEl, oldEl);
-                        return;
-                    } else {
+                   
+console.log('new children: ', newChildren)
+console.log('old children: ', oldChildren)
+console.log('nc: ', newChildNodes)
+console.log('oc: ', oldChildNodes)
+                    repeatOnChildren(newChildren, oldChildren, oldEl);
 
-                        repeatOnChildren(newChildren, oldChildren, oldEl);
-
-                    }
+                    
 
                 }
 
@@ -148,9 +177,9 @@ export default function main() {
     }
 
     function repeatOnChildren(newChildren, oldChildren, parent) {
-        let l = newChildren.length;
-        for (let i = 0; i < l; ++i) {
-            update(newChildren[i], oldChildren[i], parent);
+        let l1 = newChildren.length, l2 = oldChildren.length;
+        for (let i = 0; i < l1 || i < l2; ++i) {
+            update(newChildren[i], oldChildren[i], parent, i);
         }   
     }
 
@@ -172,5 +201,3 @@ console.log('old attrs: ', oldAttributes)
 
 // console.log('nc: ', newChildren.length)
 // console.log('oc: ', oldChildren.length)
-// console.log('nc: ', newEl.childNodes)
-// console.log('oc: ', oldEl.childNodes)
