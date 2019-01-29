@@ -16,13 +16,16 @@ export default function main() {
         {name: 'ken', id: 'p1'},
         {name: 'jen', id: 'p2'},
         {name: 'jo', id: 'p3'},
-        {name: 'sam', id: 'p4'}
+        {name: 'sam', id: 'p4'},
+        {name: 'jill', id: 'p6'},
     ];
     let l2 = [
-        {name: 'ken', id: 'p1'},
+        {name: 'benny', id: 'p7'},
         {name: 'jen', id: 'p2'},
-        {name: 'jim', id: 'p5'},
-        {name: 'sam', id: 'p4'}
+        {name: 'jimmy', id: 'p5'},
+        {name: 'sam', id: 'p4'},
+        {name: 'jill', id: 'p6'},
+        {name: 'dan', id: 'p8'}
     ];
     let list1 = l1.map((p) => create('li', null, p.name));
     let list2 = l2.map((p) => create('li', null, p.name));
@@ -68,10 +71,12 @@ export default function main() {
         if (newEl && !oldEl) {
 
             parent.appendChild(newEl);
+            return void 0;
 
         } else if (!newEl && oldEl) {
 
             parent.removeChild(oldEl);
+            return void 0;
 
         } else if (newEl && oldEl) {
 
@@ -91,34 +96,39 @@ export default function main() {
             if (newTagName !== oldTagName) {
                 //new tagName -> blowout original 
                 parent.replaceChild(newEl, oldEl);
-                return;
+                return void 0;
 
             } else if (differentAttrs(newAttributes, oldAttributes)) {
 
-                parent.replaceChild(newEl, oldEl);
-                return;
+                setTimeout(() => parent.replaceChild(newEl, oldEl), 0);
+                return void 0;
 
             } else if (differentChildren(newChildren, oldChildren)) {
 
-                parent.replaceChild(newEl, oldEl);
-                return;
+                setTimeout(() => parent.replaceChild(newEl, oldEl), 0);
+                return void 0;
 
             } else {
-                // console.log('newChildren length: ', newChildren.length)
-                // console.log('oldChildren length: ', oldChildren.length)
 
                 if (newChildren.length === 0 || oldChildren.length === 0) {
                     console.log('index: ', index)
-                    console.log('newEl innerHTML differs: ', newEl.innerHTML !== oldEl.innerHTML)
-                    console.log('oldEl: ', oldEl)
-                    console.log('parent: ', parent)
+                    // console.log('newEl innerHTML differs: ', newEl.innerHTML !== oldEl.innerHTML)
+                    // console.log('oldEl: ', oldEl)
+                    // console.log('parent: ', parent)
                     if (newEl.innerHTML !== oldEl.innerHTML) {
                         Q.push({
                             parent, 
-                            new: newEl, 
-                            old: parent.children[index]
+                            fresh: newEl, 
+                            stale: parent.children[index]
                         });
-                        //parent.replaceChild(newEl, parent.children[index])
+                        //lol dont do this
+                        setTimeout(() => {
+                            // Q.forEach((change) => {
+                            //     let {parent, fresh, stale} = change;
+                            //     parent.replaceChild(fresh, stale);
+                            // });
+                            parent.replaceChild(newEl, parent.children[index])
+                        }, 0);
                     }
 
                 }
