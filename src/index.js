@@ -5,7 +5,8 @@
 // import {question5} from './question5';
 // import {question6} from './question6';
 // import {question9} from './question9';
-import application from './application/';
+//import application from './application/';
+import main from './actual-dom';
 
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', app);
@@ -17,7 +18,8 @@ if (typeof window !== 'undefined') {
         // question4();
         // question5();
         //question9();
-        application();
+        //application();
+        main();
     }
 }
 
